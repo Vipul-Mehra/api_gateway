@@ -1,30 +1,30 @@
-package com.example.gateway.entities;
+package com.example.Centralized_db.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "product_roles", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"role_id", "product_id"})
+})
 public class ProductRoles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "role_id", nullable = false)
     @JsonIgnoreProperties("productRoles")
     private Role role;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnoreProperties("productRoles")
     private Product product;
 }

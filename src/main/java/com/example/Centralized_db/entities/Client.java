@@ -1,11 +1,8 @@
-package com.example.gateway.entities;
+package com.example.Centralized_db.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,18 +11,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "clients")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "client_name", nullable = false, unique = true, length = 150)
     private String clientName;
 
+    @Column(name = "realm_name", nullable = false, length = 150)
     private String realmName;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    // Prevent infinite recursion when serializing Client → Subscriptions → Client
     @JsonIgnoreProperties("client")
     private List<Subscription> subscriptions;
 }

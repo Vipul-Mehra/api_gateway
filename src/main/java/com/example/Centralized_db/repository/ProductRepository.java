@@ -1,6 +1,6 @@
-package com.example.gateway.repository;
+package com.example.Centralized_db.repository;
 
-import com.example.gateway.entities.Product;
+import com.example.Centralized_db.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.example.gateway;
+package com.example.Centralized_db;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

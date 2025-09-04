@@ -1,7 +1,7 @@
-package com.example.gateway.controller;
+package com.example.Centralized_db.controller;
 
-import com.example.gateway.entities.Product;
-import com.example.gateway.service.DynamicRouteService;
+import com.example.Centralized_db.entities.Product;
+import com.example.Centralized_db.service.DynamicRouteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
-package com.example.gateway.service;
+package com.example.Centralized_db.service;
 
-import com.example.gateway.entities.Product;
+import com.example.Centralized_db.entities.Product;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
