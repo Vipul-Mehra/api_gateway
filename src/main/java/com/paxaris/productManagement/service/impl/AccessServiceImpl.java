@@ -3,6 +3,7 @@ package com.paxaris.productManagement.service.impl;
 import com.paxaris.productManagement.dto.ProductAccessRequest;
 import com.paxaris.productManagement.dto.ProductAccessResponse;
 import com.paxaris.productManagement.entities.RealmProductRoleUrl;
+import com.paxaris.productManagement.exception.AccessDeniedException;
 import com.paxaris.productManagement.repository.RealmProductRoleUrlRepository;
 import com.paxaris.productManagement.service.AccessService;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +74,8 @@ public class AccessServiceImpl implements AccessService {
             System.out.printf("❌ AccessService: Access denied for realm=%s, product=%s, roles=%s%n",
                     request.getRealm(), request.getProduct(), request.getRoleName());
 
-            return ProductAccessResponse.denied("❌ Access denied: No matching role found");
+            // ❌ Instead of returning denied response → throw exception
+            throw new AccessDeniedException("❌ Access denied: No matching role found");
         }
     }
 }
