@@ -35,7 +35,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
         for (RealmProductRoleUrl entry : entries) {
             RouteDefinition route = new RouteDefinition();
             route.setId(entry.getProductName() + "-service");
-            route.setUri(URI.create(entry.getBaseUrl()));
+            route.setUri(URI.create(entry.getUrl()));
 
             PredicateDefinition predicate = new PredicateDefinition();
             predicate.setName("Path");
@@ -47,7 +47,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
             newRoutes.add(route);
 
             System.out.printf("➡ Route added: ID=%s, URL=%s, Pattern=%s%n",
-                    route.getId(), entry.getBaseUrl(), "/" + entry.getProductName() + "/**");
+                    route.getId(), entry.getUrl(), "/" + entry.getProductName() + "/**");
         }
 
         this.routes.clear();

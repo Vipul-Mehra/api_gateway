@@ -37,7 +37,7 @@ public class AccessServiceImpl implements AccessService {
                 RealmProductRoleUrl firstEntry = allProductEntries.get(0);
                 return ProductAccessResponse.allowed(
                         "✅ Admin access granted",
-                        firstEntry.getBaseUrl(),
+                        firstEntry.getUrl(),
                         firstEntry.getUri(),
                         List.of("admin")
                 );
@@ -62,11 +62,11 @@ public class AccessServiceImpl implements AccessService {
             RealmProductRoleUrl urlEntry = entries.get(0);
             System.out.printf("✅ AccessService: Access granted for %s/%s/%s → URL=%s, URI=%s%n",
                     urlEntry.getRealmName(), urlEntry.getProductName(), urlEntry.getRoleName(),
-                    urlEntry.getBaseUrl(), urlEntry.getUri());
+                    urlEntry.getUrl(), urlEntry.getUri());
 
             return ProductAccessResponse.allowed(
                     "✅ Access granted",
-                    urlEntry.getBaseUrl(),
+                    urlEntry.getUrl(),
                     urlEntry.getUri(),
                     List.of(urlEntry.getRoleName())
             );

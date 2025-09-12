@@ -1,6 +1,10 @@
 package com.paxaris.productManagement.compositeKey;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -13,6 +17,4 @@ public class RealmProductRoleUrlId implements Serializable {
     private String realmName;
     private String productName;
     private String roleName;
-    private String baseUrl;
-    private String uri;
 }

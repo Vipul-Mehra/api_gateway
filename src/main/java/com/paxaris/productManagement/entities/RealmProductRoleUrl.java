@@ -4,6 +4,7 @@ import com.paxaris.productManagement.compositeKey.RealmProductRoleUrlId;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Entity
 @Table(name = "realm_product_role_url")
 @Getter
@@ -26,11 +27,9 @@ public class RealmProductRoleUrl {
     @Column(name = "role_name", length = 50, nullable = false)
     private String roleName;
 
-    @Id
     @Column(name = "base_url", length = 191, nullable = false)
-    private String baseUrl;
+    private String url;
 
-    @Id
     @Column(name = "uri", length = 191)
     private String uri;
 }
