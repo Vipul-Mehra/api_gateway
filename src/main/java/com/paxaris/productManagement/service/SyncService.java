@@ -48,4 +48,18 @@ public class SyncService {
 
         log.info("🏁 SyncService: Completed syncing {} roles", roles.size());
     }
+
+    @Transactional
+    public boolean deleteRoleFromDb(String realm, String client, String roleName) {
+        RealmProductRoleUrlId id = new RealmProductRoleUrlId(realm, client, roleName);
+
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            log.info("🗑️ Deleted role from DB: realm={}, client={}, role={}", realm, client, roleName);
+            return true;
+        } else {
+            log.warn("⚠️ Role not found in DB for deletion: realm={}, client={}, role={}", realm, client, roleName);
+            return false;
+        }
+    }
 }

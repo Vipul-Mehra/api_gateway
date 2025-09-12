@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.paxaris.productManagement.dto.ProductAccessResponse;
 import com.paxaris.productManagement.entities.RealmProductRoleUrl;
+import com.paxaris.productManagement.repository.RealmProductRoleUrlRepository;
 import com.paxaris.productManagement.service.SyncService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +22,9 @@ import java.util.List;
 public class ProjectController {
 
     private final SyncService syncService;
+    private final RealmProductRoleUrlRepository realmProductRoleUrlRepository;
     private final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-    /**
-     * Manual registration for a single project role
-     */
     @PostMapping("/register")
     public ResponseEntity<ProductAccessResponse> registerProject(@RequestBody RealmProductRoleUrl entry) {
         try {
@@ -51,9 +51,6 @@ public class ProjectController {
         ));
     }
 
-    /**
-     * API Gateway → sends multiple roles for sync
-     */
     @PostMapping("/sync-roles")
     public ResponseEntity<ProductAccessResponse> syncRoles(@RequestBody List<RealmProductRoleUrl> roles) {
         try {
@@ -72,5 +69,48 @@ public class ProjectController {
                 null,
                 roles.stream().map(RealmProductRoleUrl::getRoleName).toList()
         ));
+    }
+
+    @PutMapping("/roles/{realm}/{client}/{roleName}")
+    public ResponseEntity<String> updateRoleInDB(
+            @PathVariable String realm,
+            @PathVariable String client,
+            @PathVariable String roleName,
+            @RequestBody RealmProductRoleUrl roleUpdate) {
+        try {
+            int updated = realmProductRoleUrlRepository.updateRole(
+                    realm,
+                    client,
+                    roleName,
+                    roleUpdate.getUrl(),
+                    roleUpdate.getUri()
+            );
+
+            if (updated > 0) {
+                return ResponseEntity.ok("✅ Role updated in Project Manager DB");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("⚠️ Role not found in DB");
+            }
+        } catch (Exception e) {
+            log.error("❌ Failed to update role: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("❌ Failed to update role");
+        }
+    }
+
+    @DeleteMapping("/delete-role/{realm}/{client}/{roleName}")
+    public ResponseEntity<String> deleteRole(
+            @PathVariable String realm,
+            @PathVariable String client,
+            @PathVariable String roleName) {
+
+        boolean deleted = syncService.deleteRoleFromDb(realm, client, roleName);
+
+        if (deleted) {
+            return ResponseEntity.ok("✅ Role deleted from DB");
+        } else {
+            return ResponseEntity.status(404).body("⚠️ Role not found in DB");
+        }
     }
 }
