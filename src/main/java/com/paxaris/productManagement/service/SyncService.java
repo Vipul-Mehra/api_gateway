@@ -50,6 +50,25 @@ public class SyncService {
     }
 
     @Transactional
+    public boolean updateRoleInDb(String realm, String client, String roleName, String url, String uri) {
+        RealmProductRoleUrlId id = new RealmProductRoleUrlId(realm, client, roleName);
+
+        return repository.findById(id).map(role -> {
+            role.setUrl(url);
+            role.setUri(uri);
+            repository.save(role);
+            log.info("✅ Updated role in DB: realm={}, client={}, role={}, url={}, uri={}",
+                    realm, client, roleName, url, uri);
+            return true;
+        }).orElseGet(() -> {
+            log.warn("⚠️ Role not found in DB for update: realm={}, client={}, role={}", realm, client, roleName);
+            return false;
+        });
+    }
+
+
+
+    @Transactional
     public boolean deleteRoleFromDb(String realm, String client, String roleName) {
         RealmProductRoleUrlId id = new RealmProductRoleUrlId(realm, client, roleName);
 

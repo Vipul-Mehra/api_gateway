@@ -70,7 +70,7 @@ public class ProjectController {
                 roles.stream().map(RealmProductRoleUrl::getRoleName).toList()
         ));
     }
-
+//update the data
     @PutMapping("/roles/{realm}/{client}/{roleName}")
     public ResponseEntity<String> updateRoleInDB(
             @PathVariable String realm,
